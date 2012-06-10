@@ -54,7 +54,18 @@ TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
 
 
 int currMinute; // Keep track of current minute value in main loop
-float results;  // results holds the output from the tide calc.    Units = ft.
+float results;  // results holds the output from the tide calc. Units = ft.
+
+//********************************
+// This is the level at which the tide will switch from 
+// high to low and vice-versa as the predicted tide height
+// rises and falls. Changing this will affect how long your
+// tank is submerged and empty. 
+float virtualShoreHeight = 3.0;   // Units = feet
+//*********************************
+
+//-----------------------------------------
+int Relay1 4;  // Pin number for first relay output
 
 //**************************************************************************
 // Welcome to the setup loop
@@ -66,6 +77,9 @@ void setup(void)
   // For debugging output to serial monitor
   Serial.begin(115200);
   //************************************
+  pinMode(Relay1, OUTPUT); //Establish that Relay1 is an output
+  digitalWrite(Relay1, LOW); // Set output signal low (i.e. off)
+  
   DateTime now = RTC.now();
   currMinute = now.minute(); // Store current minute value
   printTime(now);  // Call printTime function to print date/time to serial
