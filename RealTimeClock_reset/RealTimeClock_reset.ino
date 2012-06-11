@@ -11,7 +11,8 @@
 */
 
 #include <Wire.h>
-#include <RTClib.h>
+#include <SPI.h> // Required for RTClib to compile properly
+#include <RTClib.h> // From https://github.com/MrAlvin/RTClib
 
 RTC_DS1307 RTC;
 
