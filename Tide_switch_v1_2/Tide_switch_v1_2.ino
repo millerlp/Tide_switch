@@ -46,8 +46,15 @@
 #include <SPI.h>  // Required for RTClib to compile properly
 #include <RTClib.h> // From https://github.com/MrAlvin/RTClib
 // Real Time Clock setup
-RTC_DS3231 RTC;      
+RTC_DS3231 RTC;   
 // RTC_DS1307 RTC;  // Uncomment this version if you use the older DS1307 clock
+/* Real Time clock connections:
+   For newer Arduino Uno R3 or Leonardo boards, connect the SDA and SCL lines from
+   the Arduino to the SDA and SCL lines on the real time clock board. Also attach
+   ground and +5V from the Arduino to the real time clock board. On older Arduino
+   boards without the SDA/SCL pins, connect Arduino analog pin 4 to SDA on the 
+   clock, and analog pin 5 to the SCL pin on the clock.
+*/
 
 // Tide calculation library setup. Change the library name to use a different site.
 #include "TidePortSanLuislib.h"
