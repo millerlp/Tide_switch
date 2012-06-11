@@ -56,7 +56,10 @@ RTC_DS3231 RTC;
    clock, and analog pin 5 to the SCL pin on the clock.
 */
 
-// Tide calculation library setup. Change the library name to use a different site.
+// Tide calculation library setup. A folder of the same name containing
+// the appropriate .h and .cpp files must be installed in the 
+// arduino-1.x.x/libraries folder. 
+// Change this library name to use a different site.
 #include "TidePortSanLuislib.h"
 
 TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
