@@ -112,36 +112,47 @@ void loop(void)
     // this once per minute. 
     currMinute = now.minute();                   // update currMinute
 
-      Serial.println();
+    Serial.println();
     printTime(now); 
 
     // Calculate new tide height based on current time
     results = myTideCalc.currentTide(now);
-
-
-    if ( (results > virtualShoreHeight) && !HighFlag) {
-      // tide height is above virtualShoreHeight
-      digitalWrite(Relay1, HIGH);
-      delay(6000);
-      digitalWrite(Relay1, LOW); 
-      HighFlag = true; 
-      LowFlag = false;
-    } 
-    else if ( (results <= virtualShoreHeight) && !LowFlag) {
-      // tide height is below virtualShoreHeight
-      digitalWrite(Relay2, HIGH);
-      delay(6000);
-      digitalWrite(Relay2, LOW);
-      LowFlag = true; 
-      HighFlag = false;
-    }
-
+    
     //********************************
     // For debugging
     Serial.print("Tide height: ");
     Serial.print(results, 3);
     Serial.println(" ft.");
     Serial.println(); // blank line
+    
+    //**********************************
+    // Example code to actuate relays. This
+    // code can activate a relay for a set 
+    // period of time (6 seconds = 6000 ms).
+    // Actuate drain valves if the tide height
+    // passes the virtualShoreHeight threshold
+    // The additional check of HighFlag and LowFlag
+    // ensures that the relays are only actuated once
+    // per high or low tide cycle, instead of every 
+    // minute. 
+    if ( (results > virtualShoreHeight) && !HighFlag) {
+      // tide height is above virtualShoreHeight
+      digitalWrite(Relay1, HIGH); // Turn on relay
+      delay(6000);                // Wait 6 seconds (6000ms)
+      digitalWrite(Relay1, LOW);  // Turn relay back off
+      HighFlag = true;            // Set flag if not already set
+      LowFlag = false;            // Set flag if not already set
+    } 
+    else if ( (results <= virtualShoreHeight) && !LowFlag) {
+      // tide height is below virtualShoreHeight
+      digitalWrite(Relay2, HIGH);  // Turn on relay
+      delay(6000);                 // Wait 6 seconds
+      digitalWrite(Relay2, LOW);   // Turn relay back off
+      LowFlag = true;              // Set flag if not already set
+      HighFlag = false;            // Set flag if not already set
+    }
+
+
 
   }    // End of if (now.minute() != currMinute) statement
 } // End of main loop
