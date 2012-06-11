@@ -7,12 +7,12 @@ also drive some external switches or relays.
 Installation:
 
 Copy the RTClib folder and TidePortSanLuislib folders into your
-Ardiuno/libraries folder. Move the entire folder, not just the
-contents of the folders. 
+ardiuno-1.x.x/libraries folder. Move the entire folder, not just the
+contents of these folders. 
 
 Copy the RealTimeClock_reset and Tide_switch folders to the 
-directory where you store your Arduino directory (not in the 
-libraries folder). 
+directory where you store your Arduino files (not in the 
+libraries sub-folder). 
 
 ----------------------------------------------
 Usage:
