@@ -1,6 +1,6 @@
 /* Tide_switch
-  Copyright (C) 2012 Luke Miller
-  
+ Copyright (C) 2012 Luke Miller
+ 
  This code calculates the current tide height for the 
  pre-programmed site. It requires a real time clock
  (DS1307 or DS3231 chips) to generate a time for the 
@@ -41,12 +41,14 @@
 
 // Initial setup
 //*******************************
-#include <avr/pgmspace.h>    // Needed to store values in PROGMEM
+//#include <avr/pgmspace.h>    // Needed to store values in PROGMEM
 // Header files for talking to real time clock
 #include <Wire.h>
-#include <RTClib.h> 
+#include <SPI.h>  // Required for RTClib to compile properly
+#include <RTClib.h> // From https://github.com/MrAlvin/RTClib
 // Real Time Clock setup
-RTC_DS1307 RTC;      // This line remains the same even if you use the DS3231 chip
+RTC_DS3231 RTC;      
+// RTC_DS1307 RTC;  // Uncomment this version if you use the older DS1307 clock
 
 // Tide calculation library setup. Change the library name to use a different site.
 #include "TidePortSanLuislib.h"
@@ -87,7 +89,7 @@ void setup(void)
   pinMode(Relay2, OUTPUT);
   digitalWrite(Relay2, LOW); 
   //************************************
-  
+
   DateTime now = RTC.now();
   currMinute = now.minute(); // Store current minute value
   printTime(now);  // Call printTime function to print date/time to serial
@@ -110,37 +112,38 @@ void loop(void)
     // over, so it's time to update the tide height. We only want to do
     // this once per minute. 
     currMinute = now.minute();                   // update currMinute
-    
-    Serial.println();
+
+      Serial.println();
     printTime(now); 
-    
+
     // Calculate new tide height based on current time
     results = myTideCalc.currentTide(now);
-    
-    
+
+
     if ( (results > virtualShoreHeight) && !HighFlag) {
       // tide height is above virtualShoreHeight
-       digitalWrite(Relay1, HIGH);
-       delay(6000);
-       digitalWrite(Relay1, LOW); 
-       HighFlag = true; 
-       LowFlag = false;
-    } else if ( (results <= virtualShoreHeight) && !LowFlag) {
-       // tide height is below virtualShoreHeight
+      digitalWrite(Relay1, HIGH);
+      delay(6000);
+      digitalWrite(Relay1, LOW); 
+      HighFlag = true; 
+      LowFlag = false;
+    } 
+    else if ( (results <= virtualShoreHeight) && !LowFlag) {
+      // tide height is below virtualShoreHeight
       digitalWrite(Relay2, HIGH);
       delay(6000);
       digitalWrite(Relay2, LOW);
       LowFlag = true; 
       HighFlag = false;
     }
-    
+
     //********************************
     // For debugging
     Serial.print("Tide height: ");
     Serial.print(results, 3);
     Serial.println(" ft.");
     Serial.println(); // blank line
- 
+
   }    // End of if (now.minute() != currMinute) statement
 } // End of main loop
 
@@ -174,4 +177,5 @@ void printTime(DateTime now) {
   }
 }
 //********************************************************
+
 
