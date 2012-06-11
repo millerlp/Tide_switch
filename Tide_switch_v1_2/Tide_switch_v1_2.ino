@@ -82,7 +82,10 @@ void setup(void)
 
   // For debugging output to serial monitor
   Serial.begin(115200);
-  delay(5000);
+  // Wait 10 seconds to see if user opens a Serial monitor
+  // otherwise just continue running without it. 
+  if (!Serial) delay(10000);
+
   //************************************
   // Initialize output pins
   pinMode(Relay1, OUTPUT); //Establish that Relay1 is an output
@@ -122,6 +125,7 @@ void loop(void)
     
     //********************************
     // For debugging
+    Serial.println(myTideCalc.returnStationID());
     Serial.print("Tide height: ");
     Serial.print(results, 3);
     Serial.println(" ft.");
