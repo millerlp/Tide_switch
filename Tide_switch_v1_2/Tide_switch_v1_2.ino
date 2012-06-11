@@ -51,6 +51,7 @@ RTC_DS3231 RTC;
 
 // Tide calculation library setup. Change the library name to use a different site.
 #include "TidePortSanLuislib.h"
+
 TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
 
 
@@ -75,12 +76,13 @@ const int Relay2 = 5;  // Pin number for 2nd relay output. Lowers tide.
 //**************************************************************************
 // Welcome to the setup loop
 void setup(void)
-{  
+{ 
   Wire.begin();
   RTC.begin();
 
   // For debugging output to serial monitor
   Serial.begin(115200);
+  delay(5000);
   //************************************
   // Initialize output pins
   pinMode(Relay1, OUTPUT); //Establish that Relay1 is an output
@@ -130,13 +132,13 @@ void loop(void)
     // code can activate a relay for a set 
     // period of time (6 seconds = 6000 ms).
     // Actuate drain valves if the tide height
-    // passes the virtualShoreHeight threshold
+    // passes the virtualShoreHeight threshold.
     // The additional check of HighFlag and LowFlag
     // ensures that the relays are only actuated once
     // per high or low tide cycle, instead of every 
     // minute. 
     if ( (results > virtualShoreHeight) && !HighFlag) {
-      // tide height is above virtualShoreHeight
+      // Tide height is above virtualShoreHeight
       digitalWrite(Relay1, HIGH); // Turn on relay
       delay(6000);                // Wait 6 seconds (6000ms)
       digitalWrite(Relay1, LOW);  // Turn relay back off
@@ -144,16 +146,13 @@ void loop(void)
       LowFlag = false;            // Set flag if not already set
     } 
     else if ( (results <= virtualShoreHeight) && !LowFlag) {
-      // tide height is below virtualShoreHeight
+      // Tide height is below virtualShoreHeight
       digitalWrite(Relay2, HIGH);  // Turn on relay
       delay(6000);                 // Wait 6 seconds
       digitalWrite(Relay2, LOW);   // Turn relay back off
       LowFlag = true;              // Set flag if not already set
       HighFlag = false;            // Set flag if not already set
     }
-
-
-
   }    // End of if (now.minute() != currMinute) statement
 } // End of main loop
 
