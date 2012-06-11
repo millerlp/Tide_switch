@@ -61,11 +61,15 @@ float results;  // results holds the output from the tide calc. Units = ft.
 // high to low and vice-versa as the predicted tide height
 // rises and falls. Changing this will affect how long your
 // tank is submerged and empty. 
-float virtualShoreHeight = 3.0;   // Units = feet
+float virtualShoreHeight = 4.344;   // Units = feet
 //*********************************
+boolean HighFlag = false;  // Set true when tide is above virtualShoreLevel
+boolean LowFlag = false; // Set true when tide is below virturalShoreLevel
 
 //-----------------------------------------
-int Relay1 4;  // Pin number for first relay output
+const int Relay1 = 4;  // Pin number for first relay output. Raises tide.
+const int Relay2 = 5;  // Pin number for 2nd relay output. Lowers tide.
+
 
 //**************************************************************************
 // Welcome to the setup loop
@@ -77,8 +81,12 @@ void setup(void)
   // For debugging output to serial monitor
   Serial.begin(115200);
   //************************************
+  // Initialize output pins
   pinMode(Relay1, OUTPUT); //Establish that Relay1 is an output
   digitalWrite(Relay1, LOW); // Set output signal low (i.e. off)
+  pinMode(Relay2, OUTPUT);
+  digitalWrite(Relay2, LOW); 
+  //************************************
   
   DateTime now = RTC.now();
   currMinute = now.minute(); // Store current minute value
@@ -108,6 +116,23 @@ void loop(void)
     
     // Calculate new tide height based on current time
     results = myTideCalc.currentTide(now);
+    
+    
+    if ( (results > virtualShoreHeight) && !HighFlag) {
+      // tide height is above virtualShoreHeight
+       digitalWrite(Relay1, HIGH);
+       delay(6000);
+       digitalWrite(Relay1, LOW); 
+       HighFlag = true; 
+       LowFlag = false;
+    } else if ( (results <= virtualShoreHeight) && !LowFlag) {
+       // tide height is below virtualShoreHeight
+      digitalWrite(Relay2, HIGH);
+      delay(6000);
+      digitalWrite(Relay2, LOW);
+      LowFlag = true; 
+      HighFlag = false;
+    }
     
     //********************************
     // For debugging
