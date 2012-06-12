@@ -62,7 +62,7 @@ float results;  // results holds the output from the tide calc. Units = ft.
 // high to low and vice-versa as the predicted tide height
 // rises and falls. Changing this will affect how long your
 // tank is submerged and empty. 
-float virtualShoreHeight = 4.344;   // Units = feet
+float virtualShoreHeight = 2.710;   // Units = feet
 //*********************************
 boolean HighFlag = false;  // Set true when tide is above virtualShoreLevel
 boolean LowFlag = false; // Set true when tide is below virturalShoreLevel
