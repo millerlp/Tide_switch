@@ -46,11 +46,22 @@
 #include <SPI.h>  // Required for RTClib to compile properly
 #include <RTClib.h> // From https://github.com/MrAlvin/RTClib
 // Real Time Clock setup
-RTC_DS3231 RTC;      
+RTC_DS3231 RTC;   
 // RTC_DS1307 RTC;  // Uncomment this version if you use the older DS1307 clock
+/* Real Time clock connections:
+   For newer Arduino Uno R3 or Leonardo boards, connect the SDA and SCL lines from
+   the Arduino to the SDA and SCL lines on the real time clock board. Also attach
+   ground and +5V from the Arduino to the real time clock board. On older Arduino
+   boards without the SDA/SCL pins, connect Arduino analog pin 4 to SDA on the 
+   clock, and analog pin 5 to the SCL pin on the clock.
+*/
 
-// Tide calculation library setup. Change the library name to use a different site.
+// Tide calculation library setup. A folder of the same name containing
+// the appropriate .h and .cpp files must be installed in the 
+// arduino-1.x.x/libraries folder. 
+// Change this library name to use a different site.
 #include "TidePortSanLuislib.h"
+
 TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
 
 
@@ -75,12 +86,16 @@ const int Relay2 = 5;  // Pin number for 2nd relay output. Lowers tide.
 //**************************************************************************
 // Welcome to the setup loop
 void setup(void)
-{  
+{ 
   Wire.begin();
   RTC.begin();
 
   // For debugging output to serial monitor
   Serial.begin(115200);
+  // Wait 10 seconds to see if user opens a Serial monitor
+  // otherwise just continue running without it. 
+  if (!Serial) delay(10000);
+
   //************************************
   // Initialize output pins
   pinMode(Relay1, OUTPUT); //Establish that Relay1 is an output
@@ -112,37 +127,46 @@ void loop(void)
     // this once per minute. 
     currMinute = now.minute();                   // update currMinute
 
-      Serial.println();
+    Serial.println();
     printTime(now); 
 
     // Calculate new tide height based on current time
     results = myTideCalc.currentTide(now);
-
-
-    if ( (results > virtualShoreHeight) && !HighFlag) {
-      // tide height is above virtualShoreHeight
-      digitalWrite(Relay1, HIGH);
-      delay(6000);
-      digitalWrite(Relay1, LOW); 
-      HighFlag = true; 
-      LowFlag = false;
-    } 
-    else if ( (results <= virtualShoreHeight) && !LowFlag) {
-      // tide height is below virtualShoreHeight
-      digitalWrite(Relay2, HIGH);
-      delay(6000);
-      digitalWrite(Relay2, LOW);
-      LowFlag = true; 
-      HighFlag = false;
-    }
-
+    
     //********************************
     // For debugging
+    Serial.println(myTideCalc.returnStationID());
     Serial.print("Tide height: ");
     Serial.print(results, 3);
     Serial.println(" ft.");
     Serial.println(); // blank line
-
+    
+    //**********************************
+    // Example code to actuate relays. This
+    // code can activate a relay for a set 
+    // period of time (6 seconds = 6000 ms).
+    // Actuate drain valves if the tide height
+    // passes the virtualShoreHeight threshold.
+    // The additional check of HighFlag and LowFlag
+    // ensures that the relays are only actuated once
+    // per high or low tide cycle, instead of every 
+    // minute. 
+    if ( (results > virtualShoreHeight) && !HighFlag) {
+      // Tide height is above virtualShoreHeight
+      digitalWrite(Relay1, HIGH); // Turn on relay
+      delay(6000);                // Wait 6 seconds (6000ms)
+      digitalWrite(Relay1, LOW);  // Turn relay back off
+      HighFlag = true;            // Set flag if not already set
+      LowFlag = false;            // Set flag if not already set
+    } 
+    else if ( (results <= virtualShoreHeight) && !LowFlag) {
+      // Tide height is below virtualShoreHeight
+      digitalWrite(Relay2, HIGH);  // Turn on relay
+      delay(6000);                 // Wait 6 seconds
+      digitalWrite(Relay2, LOW);   // Turn relay back off
+      LowFlag = true;              // Set flag if not already set
+      HighFlag = false;            // Set flag if not already set
+    }
   }    // End of if (now.minute() != currMinute) statement
 } // End of main loop
 
