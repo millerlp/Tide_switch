@@ -60,13 +60,13 @@ RTC_DS3231 RTC;
 // the appropriate .h and .cpp files must be installed in the 
 // arduino-1.x.x/libraries folder. 
 // Change this library name to use a different site.
-#include "TidePortSanLuislib.h"
+#include "TidelibPortSanLuis.h"
 
 TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
 
 #include <SoftwareSerial.h>
 #define txPin 7
-#define rxPin 3
+#define rxPin 4
 SoftwareSerial mySerial = SoftwareSerial(rxPin, txPin);
 
 int currMinute; // Keep track of current minute value in main loop

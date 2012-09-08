@@ -60,7 +60,7 @@ RTC_DS3231 RTC;
 // the appropriate .h and .cpp files must be installed in the 
 // arduino-1.x.x/libraries folder. 
 // Change this library name to use a different site.
-#include "TidePortSanLuislib.h"
+#include "TidelibPortSanLuis.h"
 
 TideCalc myTideCalc;  // Create TideCalc object called myTideCalc
 
