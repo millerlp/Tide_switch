@@ -41,7 +41,7 @@ RTC_DS1307 RTC;  // Uncomment when using this chip
 
 // Tide calculation library setup.
 // Change the library name here to predict for a different site.
-#include "TidePortSanLuislib.h"
+#include "TidelibPortSanLuis.h"
 // Other sites available at https://github.com/millerlp/Tide_calculator
 TideCalc myTideCalc; // Create TideCalc object called myTideCalc
 

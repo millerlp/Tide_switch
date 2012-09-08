@@ -1,4 +1,4 @@
-/*  TidePortSanLuislib.cpp 
+/*  TidelibPortSanLuis.cpp 
  This source file contains a tide calculation function for the site listed
  below. This file and the associated header file should be placed in the
  Ardiuno/libraries/ directory inside a single folder.
@@ -14,7 +14,7 @@
 #include <Wire.h>
 #include <avr/pgmspace.h>
 #include "RTClib.h"
-#include "TidePortSanLuislib.h"
+#include "TidelibPortSanLuis.h"
 
 unsigned int YearIndx = 0; // Used to index rows in the Equilarg/Nodefactor arrays
 float currHours = 0;          // Elapsed hours since start of year
