@@ -3,6 +3,7 @@
  below. This file and the associated header file should be placed in the
  Ardiuno/libraries/ directory inside a single folder.
  Luke Miller, June 2012
+ https://github.com/millerlp/Tide_calculator
  Released under the GPL version 3 license.
  The harmonic constituents used here were originally derived from 
  XTide, available at http://www.flaterco.com/xtide/files.html
