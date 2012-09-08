@@ -6,7 +6,7 @@ also drive some external switches or relays.
 -----------------------------------------------
 Installation:
 
-Copy the RTClib folder and TidePortSanLuislib folders into your
+Copy the RTClib folder and TidelibPortSanLuis folders into your
 ardiuno-1.x.x/libraries folder. Move the entire folder, not just the
 contents of these folders. 
 
