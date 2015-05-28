@@ -44,7 +44,7 @@
 // Header files for talking to real time clock
 #include <Wire.h>
 #include <SPI.h>  // Required for RTClib to compile properly
-#include <RTClib.h> // From https://github.com/MrAlvin/RTClib
+#include <RTClib.h> // From https://github.com/millerlp/RTClib
 // Real Time Clock setup
 RTC_DS3231 RTC;   
 // RTC_DS1307 RTC;  // Uncomment this version if you use the older DS1307 clock
